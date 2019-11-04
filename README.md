@@ -5,3 +5,6 @@ Repositório referente ao curso da Udemy: Referente ao curso da Udemy: *Node.js:
 
 #### Installing npm pakages   
     npm i --save <package>
+
+#### Running server (nodemon)
+    nodemon index.js
