@@ -8,3 +8,7 @@ Repositório referente ao curso da Udemy: Referente ao curso da Udemy: *Node.js:
 
 #### Running server (nodemon)
     nodemon index.js
+
+#### Server port
+    (in .bashrc)
+    export EXPRESS_PORT='3333'
