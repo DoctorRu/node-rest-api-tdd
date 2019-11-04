@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/DoctorRu/node-rest-api-tdd/issues"
   },
-  "homepage": "https://github.com/DoctorRu/node-rest-api-tdd#readme"
+  "homepage": "https://github.com/DoctorRu/node-rest-api-tdd#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
