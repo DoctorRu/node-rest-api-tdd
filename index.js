@@ -1,32 +1,35 @@
-const express = require('express');
+const debug = require("debug")("app:startup");
+const config = require("config");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const logger = require("./middleware/logger");
+const courses = require("./routes/courses");
+const home = require("./routes/home");
+const express = require("express");
 const app = express();
 
-const courses = [
-    { id: 1, name: 'course 1'},
-    { id: 2, name: 'course 2'},
-    { id: 3, name: 'course 3'}
-]
-app.get('/', (req, res) => {
-    res.send('Pong!!!');
-})
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+// export NODE_ENV = 'production';
+console.log(`app: ${app.get("env")}`);
 
-app.get('/api/courses', (req, res) => {
-    res.send(courses);
-})
+app.set("view engine", "pug"); // set pug as html template render
 
-app.get('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) res.status(404).send('Course not found!')   
-    res.send(course);
-})
+app.use(express.json()); // parse json
+app.use(logger);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public")); // url http://localhost:3333/readme.txt
+app.use(helmet());
+app.use("/api/courses", courses);
+app.use("/", home);
 
-app.get('/api/posts/:year/:month', (req, res) => {
-    res.send(req.params);
-})
+console.log("Application name: " + config.get("name"));
+console.log("Mail server: " + config.get("mail.host"));
+console.log("Mail password: " + config.get("mail.password"));
 
-app.get('/api/posts', (req, res) => {
-    res.send(req.query);
-})
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  debug("Morgan enabled...");
+}
 
-const port = process.env.EXPRESS_PORT || 3000
-app.listen(3000, () => console.log(`Listening on port ${port}...`));
+const port = process.env.EXPRESS_PORT || 3333;
+app.listen(port, () => console.log(`Listening on port ${port}...`));
