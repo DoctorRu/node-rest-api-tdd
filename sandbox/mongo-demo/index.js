@@ -5,9 +5,23 @@ mongoose.connect('mongodb://localhost/playground')
     .catch(err => console.error('Could not connect to MongoDB: ', err));
 
 const courseSchema = new mongoose.Schema({
-    name: {type: String, required: true},
+    name: { type: String, required: true, minlength: 5, maxlength: 255 },
     author: String,
-    tags: [ String ],
+    category: { type: String, required: true, enum: ['web', 'mobile', 'network'] },
+    tags: { 
+        type: Array, 
+        validate: {
+            isAsync: true,
+            validator: function(v, callback) {
+                setTimeout(() => {
+                    const result = v && v.length > 0;
+                    callback(result)
+                }, 4000);
+            },
+            message: 'A course should have at least one tag.'
+        } 
+    },
+    price: { type: Number, required: function() { return this.isPublished }, min: 10, max: 200 },
     date: { type: Date, default: Date.now },
     releaseDate: { type: Date, default: Date.now },
     isPublished: Boolean,
@@ -25,16 +39,24 @@ async function createCourse() {
     // });
     
     const course = new Course( {
-        name: 'Ruby',
+        name: 'Ruby 2',
         author: 'Will',
-        tags: ['ruby', 'backend'],
-        isPublished: true
+        category: 'web',
+        // tags: ['ruby', 'backend'],
+        isPublished: true,
+        price: 22
     });
 
-    console.log('Saving course')
-    const result = await course.save();
-    console.log(result);
-    await mongoose.disconnect();
+    try {
+        console.log('Saving course')
+        const result = await course.save();
+        console.log(result);
+        await mongoose.disconnect();
+    }
+    catch (ex) {
+        console.log(ex.message);
+        await mongoose.disconnect();
+    }
 
 }
 
@@ -78,10 +100,10 @@ async function removeCourse(id) {
 }
 
 
-// createCourse();
+createCourse();
 // updateCourse('5dc8370d923af412f5cfe05e');
-removeCourse('5dc837ccc436081358266654');
-getCourses();
+// removeCourse('5dc837ccc436081358266654');
+// getCourses();
 
 
 
