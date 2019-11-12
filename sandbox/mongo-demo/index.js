@@ -55,8 +55,7 @@ async function createCourse() {
     name: "Ruby 2",
     author: "Will",
     category: "web",
-    tags: "node",
-    // tags: ['ruby', 'backend'],
+    tags: ["ruby", "backend"],
     isPublished: true,
     price: 22
   });
@@ -67,7 +66,9 @@ async function createCourse() {
     console.log(result);
     await mongoose.disconnect();
   } catch (ex) {
-    console.log(ex.message);
+    for (field in ex.errors) {
+      console.log(ex.errors[field].message);
+    }
     await mongoose.disconnect();
   }
 }
