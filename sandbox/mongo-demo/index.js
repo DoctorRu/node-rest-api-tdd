@@ -12,7 +12,10 @@ const courseSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["web", "mobile", "network"]
+    enum: ["web", "mobile", "network"],
+    lowercase: true,
+    // uppercase: true,
+    trim: true
   },
   tags: {
     type: Array,
@@ -33,7 +36,9 @@ const courseSchema = new mongoose.Schema({
       return this.isPublished;
     },
     min: 10,
-    max: 200
+    max: 200,
+    get: v => Math.round(v),
+    set: v => Math.round(v)
   },
   date: { type: Date, default: Date.now },
   releaseDate: { type: Date, default: Date.now },

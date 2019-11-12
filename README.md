@@ -9,6 +9,16 @@ Referente ao curso da Udemy: _Node.js: The Complete Guide to Build RESTful APIs_
     export DEBUG='app:startup'
     export EXPRESS_PORT='3333'
 
+#### Note
+
+Use
+
+    127.0.0.1
+
+against
+
+    localhost
+
 #### Initializing NPM
 
     npm init --yes
@@ -31,12 +41,11 @@ Manager: MongoDB Compass
 
     sudo service mongodb status / stop / start
     mongo
-    show dbs; 
+    show dbs;
     use <database>;
     db; // show current database
 
-
-#### MongoDB / Mongoose : Operators    
+#### MongoDB / Mongoose : Operators
 
     eq (equal)
     ne (not equal)
@@ -55,6 +64,7 @@ Manager: MongoDB Compass
     .skip() // Pagination
 
 Eg
+
     .find({ price: { $gte: 10, $lte: 20}}) # price > 10 and price < 20
     .find({ price: { $in: [10, 20, 30]}}) # price = 10, 20 or 30
     .or([ { author: 'Mosh'}, {isPublished: true } ]) # author = Mosh or isPublished = true
@@ -65,8 +75,6 @@ Eg
     .select({ name: 1, tags: 1 }) // Filter fields
     .sort({ name: 1 }) // 1: Ascending, -1: Descending
 
-
-
-
 Pagination eg:
-    .skip((pageNumber - 1) * pageSize) // pageNumber = 5, pageSize = 10
+
+.skip((pageNumber - 1) \* pageSize) // pageNumber = 5, pageSize = 10
